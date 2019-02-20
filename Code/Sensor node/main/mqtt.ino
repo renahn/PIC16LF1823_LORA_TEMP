@@ -1,7 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-#define DEBUG
 
 //informações da rede WIFI
 const char* ssid = "Jiomar";                 //SSID da rede WIFI
@@ -13,53 +12,53 @@ const char* mqttUser = "fagkuzua";              //user
 const char* mqttPassword = "wqQvH-bBu4TH";      //password
 const int mqttPort = 10077;                     //port
 const char* mqttTopicSub ="JUNIOR/TEMP/1";            //tópico que sera assinado
-const char* mqttTopicSub2 ="casa/L2";            //tópico que sera assinado
  
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+#define WIFI_CONNECT_TIMEOUT 15*1000 // 15 segundos
+static int milli;
 
-void app_mqtt_init(void)
+uint8_t app_mqtt_init(void)
 {
+  milli = millis();
+  
   WiFi.begin(ssid, password);
  
-  while (WiFi.status() != WL_CONNECTED) {
+  while(WiFi.status() != WL_CONNECTED) 
+  {
     delay(500);
-    #ifdef DEBUG
     Serial.println("Conectando ao WiFi..");
-    #endif
+  
+    if((millis() - milli) > WIFI_CONNECT_TIMEOUT)
+    {
+        Serial.println("TIMEOUT coneccao com WIFI");
+        return 1; 
+    }
   }
-  #ifdef DEBUG
   Serial.println("Conectado na rede WiFi");
-  #endif
+
  
   client.setServer(mqttServer, mqttPort);
   client.setCallback(callback);
  
-  while (!client.connected()) {
-    #ifdef DEBUG
+  while(!client.connected()) 
+  {
     Serial.println("Conectando ao Broker MQTT...");
-    #endif
  
-    if (client.connect("ESP8266Client", mqttUser, mqttPassword )) {
-      #ifdef DEBUG
+    if (client.connect("ESP8266Client", mqttUser, mqttPassword )) 
+    {
       Serial.println("Conectado");  
-      #endif
- 
     } else {
-      #ifdef DEBUG 
       Serial.print("falha estado  ");
       Serial.print(client.state());
-      #endif
-      delay(2000);
- 
+      return 1;
     }
   }
  
   //subscreve no tópico
   client.subscribe(mqttTopicSub);
-   client.subscribe(mqttTopicSub2);
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -118,9 +117,11 @@ void app_mqtt_loop(void)
 
 void app_mqtt_send_temp(double temp)
 {
-    if (!client.connected()) return;
+    if (!client.connected()) reconect();
     
     client.publish(mqttTopicSub, "TESTE");  
+    client.loop();
+    delay(2000); 
 }
 
 bool is_wifi_connected(void)

@@ -1,39 +1,27 @@
-/*********************************************************************
-This is an example sketch for our Monochrome Nokia 5110 LCD Displays
+//#include <SPI.h>
 
-  Pick one up today in the adafruit shop!
-  ------> http://www.adafruit.com/products/338
 
-These displays use SPI to communicate, 4 or 5 pins are required to
-interface
+static int mili;
 
-Adafruit invests time and resources providing this open source code,
-please support Adafruit and open-source hardware by purchasing
-products from Adafruit!
-
-Written by Limor Fried/Ladyada  for Adafruit Industries.
-BSD license, check license.txt for more information
-All text above, and the splash screen must be included in any redistribution
-*********************************************************************/
-
-#include <SPI.h>
-
+int value;
 
 void setup()   
 {
   Serial.begin(9600);
   Serial.println("Comecei");
 
+  system_init();
   app_temp_init();
   app_display_init();
   
-  //app_display_temperature();
-  app_mqtt_init();
+  system_set_first_time(false);
 
-  //app_lora_init();
+  task_handle();
+  
+  //app_display_temperature();
+  //app_mqtt_init(); 
 }
 
-int mili = 0;
 
 void loop() 
 {
