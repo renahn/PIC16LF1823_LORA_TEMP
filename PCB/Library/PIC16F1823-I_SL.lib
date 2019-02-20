@@ -1,0 +1,40 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#(c) SnapEDA 2016 (snapeda.com)
+#This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA) with Design Exception 1.0
+#
+# PIC16F1823-I/SL
+#
+DEF PIC16F1823-I/SL U 0 40 Y Y 1 L N
+F0 "U" -700 639 50 H V L BNN
+F1 "PIC16F1823-I/SL" -700 -757 50 H V L BNN
+F2 "SOIC127P600X175-14N" 0 0 50 H I L BNN
+F3 "14 Pin 3.5 KB Flash 128 bytes RAM 32 MHz Int Osc 12 I/O Enh Mid Range Core" 0 0 50 H I L BNN
+F4 "Microchip" 0 0 50 H I L BNN
+F5 "https://www.digikey.com.br/product-detail/en/microchip-technology/PIC16F1823-I-SL/PIC16F1823-I-SL-ND/2258580?utm_source=snapeda&utm_medium=aggregator&utm_campaign=symbol" 0 0 50 H I L BNN
+F6 "PIC16F1823-I/SL-ND" 0 0 50 H I L BNN
+F7 "PIC16F1823-I/SL" 0 0 50 H I L BNN
+F8 "SO-14 Microchip" 0 0 50 H I L BNN
+DRAW
+P 2 0 0 16 -700 600 700 600 N
+P 2 0 0 16 700 600 700 -600 N
+P 2 0 0 16 700 -600 -700 -600 N
+P 2 0 0 16 -700 -600 -700 600 N
+X RA0/ICSPDAT 13 -900 300 200 R 40 40 0 0 B 
+X RA1/ICSPCLK 12 -900 200 200 R 40 40 0 0 B C
+X RA2 11 -900 100 200 R 40 40 0 0 B 
+X RA3/MCLR 4 -900 0 200 R 40 40 0 0 B 
+X RA4/OSC2 3 -900 -100 200 R 40 40 0 0 B 
+X RA5/OSC1 2 -900 -200 200 R 40 40 0 0 B 
+X VDD 1 900 500 200 L 40 40 0 0 W 
+X RC0/SCL/SCK 10 900 300 200 L 40 40 0 0 B 
+X RC1/SDA/SDI 9 900 200 200 L 40 40 0 0 B 
+X RC2 8 900 100 200 L 40 40 0 0 B 
+X RC3 7 900 0 200 L 40 40 0 0 B 
+X RC4/TX 6 900 -100 200 L 40 40 0 0 B 
+X RC5/RX 5 900 -200 200 L 40 40 0 0 B 
+X VSS 14 900 -400 200 L 40 40 0 0 W 
+ENDDRAW
+ENDDEF
+#
+# End Library
