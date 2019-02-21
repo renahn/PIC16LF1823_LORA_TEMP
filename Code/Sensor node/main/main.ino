@@ -10,7 +10,7 @@ void setup()
   Serial.begin(9600);
   Serial.println("Comecei");
 
-  system_init();
+  system_init();    // nao tirar
   app_temp_init();
   app_display_init();
   

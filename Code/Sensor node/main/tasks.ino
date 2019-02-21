@@ -2,7 +2,10 @@
 static uint8_t sys_status = 0; 
 static uint8_t sleep_time = 1;  // em segundos
 
+static uint8_t connection = 0;
 
+#define ESP_SUCCESS     0
+#define ESP_ERROR       1
 
 void task_handle(void)
 {
@@ -12,8 +15,22 @@ void task_handle(void)
     switch(sys_status)
     {
         case 6:
-          app_mqtt_init();
-          app_mqtt_send_temp(app_temp_get());
+          if(app_mqtt_init() == ESP_SUCCESS)
+          { 
+            app_mqtt_send_temp(app_temp_get());
+            system_wifi_connection_tries_set(0);
+          }
+          else
+          {
+              connection = system_wifi_connection_tries_get();
+              connection++;
+              if(connection > 5)
+              { 
+                  connection = 6;
+                  sleep_time = 10;       
+              }
+              system_wifi_connection_tries_set(connection);
+          }
           sys_status = 0;
         break;
 

@@ -5,6 +5,8 @@
 
 #define STATUS_ADDR     1
 
+#define WIFI_CONNECT_TRIES_ADDR 2
+
 void system_init(void)
 {
     EEPROM.begin(20);
@@ -14,8 +16,9 @@ void system_set_first_time(bool first_time)
 {
     if(first_time)
     {
-        EEPROM.write(FIRST_TIME_ADDR, 0);
-        EEPROM.write(STATUS_ADDR, 0);
+        EEPROM.write(FIRST_TIME_ADDR, 0);     
+        system_status_set(0);
+        system_wifi_connection_tries_set(0);
     }
     else EEPROM.write(FIRST_TIME_ADDR, FIRST_TIME);
 
@@ -39,4 +42,15 @@ void system_status_set(uint8_t value)
 {
     EEPROM.write(STATUS_ADDR, value);
     EEPROM.commit();      
+}
+
+uint8_t system_wifi_connection_tries_get(void)
+{
+    return EEPROM.read(WIFI_CONNECT_TRIES_ADDR); 
+}
+
+void system_wifi_connection_tries_set(uint8_t value)
+{
+    EEPROM.write(WIFI_CONNECT_TRIES_ADDR, value);
+    EEPROM.commit();
 }

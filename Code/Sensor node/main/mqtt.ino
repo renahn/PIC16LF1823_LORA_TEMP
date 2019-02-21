@@ -22,10 +22,11 @@ static int milli;
 
 uint8_t app_mqtt_init(void)
 {
-  milli = millis();
-  
   WiFi.begin(ssid, password);
- 
+
+  milli = millis();
+
+  // Tenta conectar ao wifi
   while(WiFi.status() != WL_CONNECTED) 
   {
     delay(500);
@@ -39,18 +40,16 @@ uint8_t app_mqtt_init(void)
   }
   Serial.println("Conectado na rede WiFi");
 
- 
+  // Conecta ao servidor MQTT
   client.setServer(mqttServer, mqttPort);
   client.setCallback(callback);
  
   while(!client.connected()) 
   {
     Serial.println("Conectando ao Broker MQTT...");
- 
-    if (client.connect("ESP8266Client", mqttUser, mqttPassword )) 
+    if(client.connect("ESP8266Client", mqttUser, mqttPassword )) Serial.println("Conectado");  
+    else 
     {
-      Serial.println("Conectado");  
-    } else {
       Serial.print("falha estado  ");
       Serial.print(client.state());
       return 1;
@@ -59,6 +58,8 @@ uint8_t app_mqtt_init(void)
  
   //subscreve no tópico
   client.subscribe(mqttTopicSub);
+
+  return 0;
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -118,8 +119,12 @@ void app_mqtt_loop(void)
 void app_mqtt_send_temp(double temp)
 {
     if (!client.connected()) reconect();
+
+    int num = (int)temp;
+    char cstr[16];
+    itoa(num, cstr, 10);
     
-    client.publish(mqttTopicSub, "TESTE");  
+    client.publish(mqttTopicSub, cstr);  
     client.loop();
     delay(2000); 
 }
